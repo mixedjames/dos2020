@@ -1,0 +1,7 @@
+TARGET = VBE2.EXE
+
+SRC =\
+	VBE2.C\
+	MAIN.C
+
+SRC_DIRS = SRC
