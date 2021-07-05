@@ -9,9 +9,10 @@ and search ```DOS2020``` for more documentation.
 
 ```
 ./
-  CODE - Projects live here
-  H    - Headers for the JLIB library live here
-  LIB  - .LIB files for the JLIB library
+  CODE  - Projects live here
+  H     - Headers for the JLIB library live here
+  LIB   - .LIB files for the JLIB library
+  BUILD - Common Makefiles live here
 ```
 
 ## Some rules to make understanding the project easier

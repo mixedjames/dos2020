@@ -1,0 +1,68 @@
+!IF !$d(SRC)
+!  ERROR You must define a variable named SRC in your PARTS file
+!ENDIF
+
+!IF !$d(SRC_DIRS)
+!  ERROR You must define a variable named SRC_DIRS in your PARTS file
+!ENDIF
+
+!IF !$d(TARGET)
+!  ERROR You must define a variable named TARGET in your PARTS file
+!ENDIF
+
+COMPLETE_SRC = $(SRC) $(SRC_16BIT)
+OBJ_PASS1 = $(COMPLETE_SRC:.C=.OBJ)
+OBJ = $(OBJ_PASS1:.ASM=.OBJ)
+
+.autodepend
+.path.c = ../../$(SRC_DIRS:;=;../../)
+.path.asm = ../../$(SRC_DIRS:;=;../../)
+
+!IF !$d(MODEL) || $(MODEL) == SMALL
+MODEL_CFLAGS = -ms
+MODEL_STARTUP = C0S
+MODEL_LIBRARY = CS
+MODEL_LIB_SUFFIX = S
+!ELIF $(MODEL) == MEDIUM
+MODEL_CFLAGS = -mm
+MODEL_STARTUP = C0M
+MODEL_LIBRARY = CM
+MODEL_LIB_SUFFIX = M
+!ELIF $(MODEL) == COMPACT
+MODEL_CFLAGS = -mc
+MODEL_STARTUP = C0C
+MODEL_LIBRARY = CC
+MODEL_LIB_SUFFIX = C
+!ELIF $(MODEL) == LARGE
+MODEL_CFLAGS = -ml
+MODEL_STARTUP = C0L
+MODEL_LIBRARY = CL
+MODEL_LIB_SUFFIX = L
+!ELIF $(MODEL) == HUGE
+MODEL_CFLAGS = -mh
+MODEL_STARTUP = C0H
+MODEL_LIBRARY = CH
+MODEL_LIB_SUFFIX = H
+!ELSE
+!ERROR Unsupported model specified
+!ENDIF
+
+CFLAGS = -I../../$(SRC_DIRS:;=;../../) -ID:\INCLUDE -IC:\H -a2
+LDFLAGS = -LD:\LIB;C:\LIB\BORLAND
+
+$(TARGET): $(OBJ)
+	TLINK $(LDFLAGS) $(MODEL_STARTUP) $(OBJ), $(TARGET), , $(MODEL_LIBRARY) J16S
+
+.c.obj:
+	$(CC) $(CFLAGS) $(MODEL_CFLAGS) -c -o$&.OBJ $*.C
+
+.asm.obj:
+	NASM -f OBJ -o $&.OBJ $*.ASM
+
+clean:
+	DEL *.OBJ
+	DEL *.EXE
+	DEL *.MAP
+
+publish:
+	TLIB ..\..\..\..\..\LIB\BORLAND\J16$(MODEL_LIB_SUFFIX) -+$(PUBLIC_OBJECTS)

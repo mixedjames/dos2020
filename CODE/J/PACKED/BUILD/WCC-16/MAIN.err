@@ -1,0 +1,2 @@
+..\..\SRC\MAIN.c(22): Warning! W200: 'u' has been referenced but never assigned a value
+..\..\SRC\MAIN.c(21): Warning! W200: 'p' has been referenced but never assigned a value

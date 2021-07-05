@@ -1,0 +1,6 @@
+TARGET = UTILS.EXE
+
+SRC =\
+	MAIN.C
+
+SRC_DIRS = SRC

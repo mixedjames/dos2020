@@ -1,0 +1,52 @@
+!
+! 386|LINK command file to link a Microsoft 32-bit C/C++ program to run
+! under Phar Lap's 386|DOS-Extender
+!
+-start __p_start		! program entry point
+-stack 4000h			! give program a 16K stack
+-maxdata 0			! no extra memory allocated at pgm load time
+-define __acrtused=0		! symbol needed by libc
+-exeformat exp			! create a .EXP output file
+-defstubname gorun386		! bind GORUN386 stub loader on the output file
+-twocase			! case-sensitive link
+-lib tnt.lib			! Functions needed by libc.lib
+-lib dosx32.lib			! _dx_ functions for Phar Lap system calls
+-lib dos32.lib			! _dos_ and _bios_ functions for DOS and BIOS
+				! system calls
+!-lib nafxcr.lib		! Microsoft Foundation Class library for C++
+-386				! 386 (or later) processor target
+
+! Segment ordering required by the C initialization code
+-order class CODE
+-order class DATA
+-order class CONST
+-order class FAR_DATA
+-order class BSS
+-order segment _DATA
+-order segment _data
+-order segment _const
+
+-order segment _CRT$XIA
+-order segment _CRT$XIC
+-order segment _CRT$XIZ
+-order segment _CRT$XCA
+-order segment _CRT$XCC
+-order segment _CRT$XCL
+-order segment _CRT$XCU
+-order segment _CRT$XCZ
+-order segment _CRT$XPA
+-order segment _CRT$XPX
+-order segment _CRT$XPZ
+-order segment _CRT$XTA
+-order segment _CRT$XTZ
+
+! Give code the "er" (execute/read) and data the "rw" (read/write)
+! attributes, so a debugger (such as 386|SRCBug) will be able to
+! distinguish between code and data symbols
+
+!-attributes class CODE er
+!-attributes class DATA rw
+!-attributes class CONST rw
+!-attributes class BSS rw
+!-attributes class STACK rw
+!-attributes group DGROUP rw

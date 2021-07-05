@@ -1,0 +1,20 @@
+# Ignore all build detritus
+# Remember case rules
+
+*.exe
+*.EXE
+
+*.MAP
+*.map
+
+*.OBJ
+*.obj
+
+*.RSP
+*.rsp
+
+*.D
+*.d
+
+*.O
+*.o
